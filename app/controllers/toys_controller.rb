@@ -14,12 +14,23 @@ class ToysController < ApplicationController
   def update
     toy = Toy.find_by(id: params[:id])
     toy.update(toy_params)
+    
   end
 
   def destroy
     toy = Toy.find_by(id: params[:id])
     toy.destroy
     head :no_content
+  end
+
+  def increment_likes
+    toy = Toy.find_by(id: params[:id])
+    if toy
+      toy.update(likes: toy.likes + 1)
+      render json: toy
+    else
+      render json: {error: "Toy not found "}, status: :not_found
+    end
   end
 
   private
